@@ -68,3 +68,22 @@ SP_I_MER_USUARIO 'Maria Lima','mlima','secreta123';
 SELECT *FROM MER_USUARIO;
 
 EXEMPLO 4
+
+GO
+CREATE OR ALTER PROCEDURE SP_S_MER_USUARIO_LOGIN
+(@login varchar(50), @senha varchar(100)) AS
+DECLARE @RETORNO INT
+SELECT @RETORNO = COUNT(USU_IN_CODIGO) FROM MER_USUARIO		
+				  WHERE USU_ST_LOGIN = @login AND
+				        USU_BI_SENHA =
+	   HASHBYTES('SHA2_512',CONVERT(VARBINARY,@senha))
+IF @RETORNO < 1
+BEGIN
+	RAISERROR('O usuário ou a senha informados são  inválidos!',15,1)
+    RETURN
+END
+PRINT @RETORNO
+RETURN
+
+SP_S_MER_USUARIO_LOGIN 'mlima','secreta123' 
+
