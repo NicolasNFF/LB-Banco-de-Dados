@@ -87,3 +87,27 @@ RETURN
 
 SP_S_MER_USUARIO_LOGIN 'mlima','secreta123' 
 
+EXEMPLO 5
+
+GO
+
+CREATE OR ALTER PROCEDURE SP_D_MER_USUARIO
+(@codigo int) AS
+SET NOCOUNT ON
+IF LEN(@codigo) < 1
+BEGIN
+	RAISERROR('É obrigatorio informar o código do usuario!',15,1)
+	RETURN
+END
+DELETE FROM MER_USUARIO WHERE USU_IN_CODIGO = @codigo;
+IF @@ROWCOUNT = 0 --retorna o nr de linhas 'afetadas'
+BEGIN
+	RAISERROR('Não havia nenhum usuário para excluir com código informado',15,1)
+END
+RETURN
+GO
+SP_D_MER_USUARIO 152; --VAI DAR ERRO. NÃO EXISTE 152
+SP_D_MER_USUARIO 1; --É PRA EXCLUIR COM SUCESSO
+
+EXEMPLO 6
+
